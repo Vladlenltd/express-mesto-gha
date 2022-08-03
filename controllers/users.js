@@ -29,3 +29,25 @@ module.exports.getUsers = (req, res) => {
       res.status(500).send({ message: `Ошибка сервера ${error}` });
     });
 };
+module.exports.updateUserInfo = (req, res) => {
+  const { name, about } = req.body;
+  const userId = req.user._id;
+  User.findByIdAndUpdate(userId, { name, about })
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((error) => {
+      res.status(500).send({ message: `Ошибка сервера ${error}` });
+    });
+};
+module.exports.updateUserAvatar = (req, res) => {
+  const { avatar } = req.body;
+  const userId = req.user._id;
+  User.findByIdAndUpdate(userId, { avatar })
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((error) => {
+      res.status(500).send({ message: `Ошибка сервера ${error}` });
+    });
+};
