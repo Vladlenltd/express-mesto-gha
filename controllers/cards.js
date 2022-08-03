@@ -30,3 +30,31 @@ module.exports.deleteCard = (req, res) => {
       res.status(500).send({ message: `Ошибка сервера ${error}` });
     });
 };
+module.exports.likeCard = (req, res) => {
+  const cardId = req.params.id;
+  Card.findByIdAndUpdate(
+    cardId,
+    { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
+    { new: true }
+  )
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((error) => {
+      res.status(500).send({ message: `Ошибка сервера ${error}` });
+    });
+};
+module.exports.disLikeCard = (req, res) => {
+  const cardId = req.params.id;
+  Card.findByIdAndUpdate(
+    cardId,
+    { $pull: { likes: req.user._id } }, // добавить _id в массив, если его там нет
+    { new: true }
+  )
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((error) => {
+      res.status(500).send({ message: `Ошибка сервера ${error}` });
+    });
+};
