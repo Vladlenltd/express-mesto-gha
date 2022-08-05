@@ -9,7 +9,7 @@ const {
 
 cardsRouter.post('/cards', createCard);
 cardsRouter.get('/cards', getCard);
-cardsRouter.delete('/cards:id', deleteCard);
+cardsRouter.delete('/cards/:id', deleteCard);
 cardsRouter.put('/cards/:id/likes', likeCard);
 cardsRouter.delete('/cards/:id/likes', disLikeCard);
 module.exports = cardsRouter;
