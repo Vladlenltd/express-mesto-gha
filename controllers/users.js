@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require('../models/user');
 
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
@@ -7,10 +7,10 @@ module.exports.createUser = (req, res) => {
       res.status(200).send(data);
     })
     .catch((error) => {
-      if (error.name === "ValidationError") {
+      if (error.name === 'ValidationError') {
         res
           .status(400)
-          .send({ message: `Данные не прошли валидацию на сервере` });
+          .send({ message: 'Данные не прошли валидацию на сервере' });
         return;
       }
       res.status(500).send({ message: `Ошибка сервера ${error}` });
@@ -29,7 +29,7 @@ module.exports.getUserById = (req, res) => {
       res.status(200).send(data);
     })
     .catch((error) => {
-      if (error.name === "CastError") {
+      if (error.name === 'CastError') {
         res.status(400).send({ message: `Неверно указан id:${userId}` });
         return;
       }
