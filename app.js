@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-// const usersRouter = require("./routes/users");
-// const cardsRouter = require("./routes/cards");
+const usersRouter = require("./routes/users");
+const cardsRouter = require("./routes/cards");
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -17,12 +17,14 @@ app.listen(PORT, () => {
 });
 
 app.use(express.json());
-app.use("/users", require("./routes/users"));
-app.use("/cards", require("./routes/cards"));
+app.use("/", cardsRouter);
+app.use("/", usersRouter);
+// app.use("/users", require("./routes/users"));
+// app.use("/cards", require("./routes/cards"));
 
 app.use((req, res, next) => {
   req.user = {
-    _id: "62ea405344c8069c77d5e06e",
+    _id: "62eb874586e7f4881ce83d55",
   };
   next();
 });
