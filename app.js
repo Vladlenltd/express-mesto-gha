@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
+const errorStatus = require('./utils/errorStatus');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -27,5 +28,5 @@ app.use(express.json());
 app.use('/', cardsRouter);
 app.use('/', usersRouter);
 app.use((req, res) => {
-  res.status(404).send({ message: 'Страницы не существует' });
+  res.status(errorStatus.NOT_FOUND).send({ message: 'Страницы не существует' });
 });

@@ -1,19 +1,20 @@
 const User = require('../models/user');
+const errorStatus = require('../utils/errorStatus');
 
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
     .then((data) => {
-      res.status(200).send(data);
+      res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res
-          .status(400)
+          .status(errorStatus.BAD_REQUEST)
           .send({ message: 'Данные не прошли валидацию на сервере' });
         return;
       }
-      res.status(500).send({ message: `Ошибка сервера ${error}` });
+      res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
 module.exports.getUserById = (req, res) => {
@@ -22,27 +23,27 @@ module.exports.getUserById = (req, res) => {
     .then((data) => {
       if (!data) {
         res
-          .status(404)
+          .status(errorStatus.NOT_FOUND)
           .send({ message: `Пользователь с указанным id:${userId} не найден` });
         return;
       }
-      res.status(200).send(data);
+      res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
     })
     .catch((error) => {
       if (error.name === 'CastError') {
-        res.status(400).send({ message: `Неверно указан id:${userId}` });
+        res.status(errorStatus.BAD_REQUEST).send({ message: `Неверно указан id:${userId}` });
         return;
       }
-      res.status(500).send({ message: `Ошибка сервера ${error}` });
+      res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((data) => {
-      res.status(200).send(data);
+      res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
     })
     .catch((error) => {
-      res.status(500).send({ message: `Ошибка сервера ${error}` });
+      res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
 module.exports.updateUserInfo = (req, res) => {
@@ -50,13 +51,13 @@ module.exports.updateUserInfo = (req, res) => {
   const userId = req.user._id;
   User.findByIdAndUpdate({ id: userId }, { name, about }, { new: true, runValidators: true })
     .then((data) => {
-      res.status(200).send(data);
+      res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        res.status(400).send({ message: 'Некорректные данные' });
+        res.status(errorStatus.BAD_REQUEST).send({ message: 'Некорректные данные' });
       }
-      res.status(500).send({ message: `Ошибка сервера ${error}` });
+      res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
 module.exports.updateUserAvatar = (req, res) => {
@@ -64,12 +65,12 @@ module.exports.updateUserAvatar = (req, res) => {
   const userId = req.user._id;
   User.findByIdAndUpdate({ id: userId }, { avatar }, { new: true, runValidators: true })
     .then((data) => {
-      res.status(200).send(data);
+      res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        res.status(400).send({ message: 'Некорректные данные' });
+        res.status(errorStatus.BAD_REQUEST).send({ message: 'Некорректные данные' });
       }
-      res.status(500).send({ message: `Ошибка сервера ${error}` });
+      res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
