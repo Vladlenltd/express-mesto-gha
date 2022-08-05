@@ -16,16 +16,16 @@ app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`App works at port ${PORT}`);
 });
-
-app.use(express.json());
-app.use('/', cardsRouter);
-app.use('/', usersRouter);
-// app.use("/users", require("./routes/users"));
-// app.use("/cards", require("./routes/cards"));
-
 app.use((req, res, next) => {
   req.user = {
     _id: '62eb874586e7f4881ce83d55',
   };
   next();
+});
+
+app.use(express.json());
+app.use('/', cardsRouter);
+app.use('/', usersRouter);
+app.use((req, res) => {
+  res.status(404).send({ message: 'Страницы не существует' });
 });
