@@ -48,7 +48,7 @@ module.exports.getUsers = (req, res) => {
 module.exports.updateUserInfo = (req, res) => {
   const { name, about } = req.body;
   const userId = req.user._id;
-  User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
+  User.findByIdAndUpdate({ id: userId }, { name, about }, { new: true, runValidators: true })
     .then((data) => {
       res.status(200).send(data);
     })
@@ -62,7 +62,7 @@ module.exports.updateUserInfo = (req, res) => {
 module.exports.updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
   const userId = req.user._id;
-  User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
+  User.findByIdAndUpdate({ id: userId }, { avatar }, { new: true, runValidators: true })
     .then((data) => {
       res.status(200).send(data);
     })
