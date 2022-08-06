@@ -11,8 +11,9 @@ module.exports.createCard = (req, res) => {
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res.status(errorStatus.BAD_REQUEST).send({ message: 'Некорректные данные' });
+      } else {
+        res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
-      res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
 module.exports.getCard = (req, res) => {
