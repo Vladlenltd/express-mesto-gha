@@ -22,6 +22,10 @@ module.exports.getCard = (req, res) => {
       res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
     })
     .catch((error) => {
+      if (error.name === 'CastError') {
+        res.status(errorStatus.BAD_REQUEST).send({ message: 'Карточка не найдена' });
+        return;
+      }
       res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };

@@ -10,32 +10,18 @@ module.exports.createUser = (req, res) => {
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res.status(errorStatus.BAD_REQUEST).send({ message: 'Данные не прошли валидацию на сервере' });
-        return;
+        // return;
+      } else {
+        res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
-      res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
-  // .then((data) => {
-  //   res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
-  // })
-  // .catch((error) => {
-  //   if (error.name === 'ValidationError') {
-  //     res
-  //       .status(errorStatus.BAD_REQUEST)
-  //       .send({ message: 'Данные не прошли валидацию на сервере' });
-  //     // return;
-  //   } else {
-  //     res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
-  //   }
-  // });
 };
 module.exports.getUserById = (req, res) => {
   const userId = req.params.id;
   User.findById(userId)
     .then((data) => {
       if (!data) {
-        res
-          .status(errorStatus.NOT_FOUND)
-          .send({ message: `Пользователь с указанным id:${userId} не найден` });
+        res.status(errorStatus.NOT_FOUND).send({ message: `Пользователь с указанным id:${userId} не найден` });
         return;
       }
       res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
