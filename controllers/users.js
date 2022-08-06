@@ -44,6 +44,10 @@ module.exports.getUsers = (req, res) => {
       res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
     })
     .catch((error) => {
+      if (error.name === 'CastError') {
+        res.status(errorStatus.NOT_FOUND).send({ message: 'Пользователи  не созданы' });
+        return;
+      }
       res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
