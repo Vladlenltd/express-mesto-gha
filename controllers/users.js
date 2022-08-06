@@ -46,7 +46,7 @@ module.exports.getUsers = (req, res) => {
 module.exports.updateUserInfo = (req, res) => {
   const { name, about } = req.body;
   const userId = req.user._id;
-  User.findOneAndUpdate({ id: userId }, { name, about }, { new: true, runValidators: true })
+  User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
     .then((data) => {
       res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
     })
