@@ -51,6 +51,10 @@ module.exports.likeCard = (req, res) => {
     { new: true },
   )
     .then((data) => {
+      if (!data) {
+        res.status(errorStatus.NOT_FOUND).send({ message: `Карточка с указанным id:${cardId} не найдена` });
+        return;
+      }
       res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
     })
     .catch((error) => {
