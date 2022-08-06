@@ -12,9 +12,10 @@ module.exports.createUser = (req, res) => {
         res
           .status(errorStatus.BAD_REQUEST)
           .send({ message: 'Данные не прошли валидацию на сервере' });
-        return;
+        // return;
+      } else {
+        res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
-      res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
 module.exports.getUserById = (req, res) => {
