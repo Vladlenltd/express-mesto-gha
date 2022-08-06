@@ -19,6 +19,7 @@ module.exports.createUser = (req, res) => {
 module.exports.getUserById = (req, res) => {
   const userId = req.params.id;
   User.findById(userId)
+    .orFail(new Error(`Пользователь с указанным id:${userId} не найден`))
     .then((data) => {
       if (!data) {
         res.status(errorStatus.NOT_FOUND).send({ message: `Пользователь с указанным id:${userId} не найден` });
