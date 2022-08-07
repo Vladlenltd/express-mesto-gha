@@ -28,7 +28,7 @@ module.exports.getUserById = (req, res) => {
       }
     })
     .catch((error) => {
-      if (error.name === 'CastError' || error.name === 'ValidationError') {
+      if (error.name === 'CastError') {
         res.status(errorStatus.BAD_REQUEST).send({ message: `Неверно указан id:${userId}` });
         // return;
       } else {
