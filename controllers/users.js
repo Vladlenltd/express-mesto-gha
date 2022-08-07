@@ -4,8 +4,8 @@ const errorStatus = require('../utils/errorStatus');
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
-    .then((data) => {
-      res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
+    .then((user) => {
+      res.status(errorStatus.SUCCESSFUL_REQUEST).send(user);
     })
     .catch((error) => {
       if (error.name === 'ValidationError' || error.name === 'CastError') {
