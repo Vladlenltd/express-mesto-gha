@@ -62,7 +62,8 @@ module.exports.likeCard = (req, res) => {
       res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
     })
     .catch((error) => {
-      res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
+      res.status(errorStatus.BAD_REQUEST).send({ message: `Ошибка сервера ${error}` });
+      // res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
 module.exports.disLikeCard = (req, res) => {
