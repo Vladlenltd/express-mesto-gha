@@ -4,17 +4,26 @@ const errorStatus = require('../utils/errorStatus');
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
-    .then((user) => {
-      res.status(errorStatus.SUCCESSFUL_REQUEST).send(user);
+    .then((data) => {
+      res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
     })
     .catch((error) => {
-      if (error.name === 'ValidationError' || error.name === 'CastError') {
-        return res.status(errorStatus.BAD_REQUEST).send({ message: 'Данные не прошли валидацию на сервере' });
+      if (error.name === 'ValidationError') {
+        res.status(400).send({ message: 'Данные не прошли валидацию на сервере' });
+        return;
       }
-      // else {
-      return res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
-      // }
+      res.status(500).send({ message: `Ошибка сервера ${error}` });
     });
+  // .then((user) => {
+  //   res.status(errorStatus.SUCCESSFUL_REQUEST).send(user);
+  // })
+  // .catch((error) => {
+  //   if (error.name === 'ValidationError' || error.name === 'CastError') {
+  // res.status(errorStatus.BAD_REQUEST).send({ message: 'Данные не прошли валидацию на сервере' });
+  //   } else {
+  //     res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
+  //   }
+  // });
 };
 module.exports.getUserById = (req, res) => {
   const userId = req.params.id;
