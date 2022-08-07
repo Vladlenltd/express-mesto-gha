@@ -5,12 +5,12 @@ module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
   const owner = req.user._id;
   Card.create({ name, link, owner })
-    .then((card) => res.status(errorStatus.SUCCESSFUL_REQUEST).send(card))
+    .then((card) => res.status(200).send(card))
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        res.status(errorStatus.BAD_REQUEST).send({ message: 'Некорректные данные' });
+        res.status(404).send({ message: 'Некорректные данные' });
       } else {
-        res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
+        res.status(505).send({ message: `Ошибка сервера ${error}` });
       }
     });
 };
