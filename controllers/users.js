@@ -8,7 +8,7 @@ module.exports.createUser = (req, res) => {
       res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
     })
     .catch((error) => {
-      if (error.name === 'ValidationError') {
+      if (error.name === 'ValidationError' || error.name === 'CastError') {
         res.status(errorStatus.BAD_REQUEST).send({ message: 'Данные не прошли валидацию на сервере' });
       // return;
       } else {
@@ -55,12 +55,9 @@ module.exports.updateUserInfo = (req, res) => {
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res.status(errorStatus.BAD_REQUEST).send({ message: 'Некорректные данные' });
-        return;
+      } else {
+        res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
-      //     } else {
-      res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
-      //     }
-      //   });
     });
 };
 module.exports.updateUserAvatar = (req, res) => {
