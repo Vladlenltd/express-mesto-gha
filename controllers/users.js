@@ -57,11 +57,12 @@ module.exports.updateUserInfo = (req, res) => {
         res.status(errorStatus.BAD_REQUEST).send({ message: 'Некорректные данные' });
         return;
       }
-  //     } else {
-        res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
-  //     }
-  //   });
-});
+      //     } else {
+      res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
+      //     }
+      //   });
+    });
+};
 module.exports.updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
   const userId = req.user._id;
