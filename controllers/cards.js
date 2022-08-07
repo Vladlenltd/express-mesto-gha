@@ -10,10 +10,7 @@ module.exports.createCard = (req, res) => {
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        // res.status(errorStatus.BAD_REQUEST).send({ message: 'Некорректные данные' });
         res.status(errorStatus.BAD_REQUEST).send({ message: 'Некорректные данные' });
-      } else if (error.name === 'CastError') {
-        res.status(errorStatus.NOT_FOUND).send({ message: 'Информация не найдена' });
       } else {
         res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
