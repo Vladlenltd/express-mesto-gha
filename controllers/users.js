@@ -28,7 +28,6 @@ module.exports.getUserById = (req, res) => {
     .catch((error) => {
       if (error.name === 'CastError') {
         res.status(errorStatus.BAD_REQUEST).send({ message: `Неверно указан id:${userId}` });
-        // return;
       } else {
         res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }

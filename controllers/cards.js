@@ -5,7 +5,9 @@ module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
   const owner = req.user._id;
   Card.create({ name, link, owner })
-    .then((card) => res.status(errorStatus.SUCCESSFUL_REQUEST).send(card))
+    .then((data) => {
+      res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
+    })
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res.status(errorStatus.BAD_REQUEST).send({ message: 'Некорректные данные' });
@@ -20,10 +22,6 @@ module.exports.getCard = (req, res) => {
       res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
     })
     .catch((error) => {
-      if (error.name === 'CastError') {
-        res.status(errorStatus.BAD_REQUEST).send({ message: 'Карточка не найдена' });
-        return;
-      }
       res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
@@ -53,14 +51,10 @@ module.exports.likeCard = (req, res) => {
     { new: true },
   )
     .then((data) => {
-      if (!data) {
-        res.status(errorStatus.NOT_FOUND).send({ message: `Карточка с указанным id:${cardId} не найдена` });
-        return;
-      }
       res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
     })
     .catch((error) => {
-      res.status(errorStatus.BAD_REQUEST).send({ message: `Ошибка сервера ${error}` });
+      res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
 module.exports.disLikeCard = (req, res) => {
