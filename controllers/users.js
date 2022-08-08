@@ -9,21 +9,11 @@ module.exports.createUser = (req, res) => {
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        res.status(400).send({ message: 'Данные не прошли валидацию на сервере' });
-        return;
+        res.status(errorStatus.BAD_REQUEST).send({ message: 'Данные не прошли валидацию на сервере' });
+      } else {
+        res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
-      res.status(500).send({ message: `Ошибка сервера ${error}` });
     });
-  // .then((user) => {
-  //   res.status(errorStatus.SUCCESSFUL_REQUEST).send(user);
-  // })
-  // .catch((error) => {
-  //   if (error.name === 'ValidationError' || error.name === 'CastError') {
-  // res.status(errorStatus.BAD_REQUEST).send({ message: 'Данные не прошли валидацию на сервере' });
-  //   } else {
-  //     res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
-  //   }
-  // });
 };
 module.exports.getUserById = (req, res) => {
   const userId = req.params.id;

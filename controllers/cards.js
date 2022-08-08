@@ -14,18 +14,6 @@ module.exports.createCard = (req, res) => {
       }
     });
 };
-//   Card.create({ name, link, owner })
-//     .then((data) => {
-//       res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
-//     })
-//     .catch((error) => {
-//       if (error.name === 'ValidationError') {
-//         res.status(errorStatus.BAD_REQUEST).send({ message: 'Некорректные данные' });
-//       } else {
-//         res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
-//       }
-//     });
-// };
 module.exports.getCard = (req, res) => {
   Card.find({})
     .then((data) => {
