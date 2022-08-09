@@ -50,20 +50,19 @@ module.exports.likeCard = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .orFail(() => {
-      throw new Error('NOT_FOUND');
-    })
     .then((data) => {
+      if (!data) {
+        res.status(errorStatus.NOT_FOUND).send({ message: `Карточка с указанным id:${cardId} не найдена` });
+        return;
+      }
       res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
     })
     .catch((error) => {
       if (error.name === 'CastError') {
-        res.status(errorStatus.BAD_REQUEST).send({ message: 'Некорректные id' });
-      } else if (error.name === 'NOT_FOUND') {
-        res.status(errorStatus.NOT_FOUND).send({ message: 'Карточка не найдена' });
-      } else {
-        res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
+        res.status(errorStatus.BAD_REQUEST).send({ message: 'Некорректные данные' });
+        return;
       }
+      res.status(errorStatus.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
 module.exports.disLikeCard = (req, res) => {
