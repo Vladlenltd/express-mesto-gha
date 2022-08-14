@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const errorStatus = require('./utils/errorStatus');
+const { createUser, login } = require('./controllers/users');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -27,6 +28,9 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use('/', cardsRouter);
 app.use('/', usersRouter);
+app.post('/signin', login);
+app.post('/signup', createUser);
+
 app.use((req, res) => {
   res.status(errorStatus.NOT_FOUND).send({ message: 'Страницы не существует' });
 });
