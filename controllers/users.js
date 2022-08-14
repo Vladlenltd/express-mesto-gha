@@ -90,3 +90,13 @@ module.exports.login = (req, res) => {
       res.status(errorStatus.BAD_REQUEST).send({ message: error.message });
     });
 };
+module.exports.getCurrentUserInfo = (req, res) => {
+  const userId = req.user._id;
+  return User.findById(userId)
+    .then((user) => {
+      res.status(errorStatus.SUCCESSFUL_REQUEST).res.send(user);
+    })
+    .catch((error) => {
+      res.status(401).send({ message: error.message });
+    });
+};
