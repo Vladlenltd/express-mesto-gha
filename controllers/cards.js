@@ -1,6 +1,6 @@
 const Card = require('../models/card');
 const errorStatus = require('../utils/errorStatus');
-const AuthError = require('../errors/authError');
+const AccessError = require('../errors/accessError');
 const BadRequest = require('../errors/badRequest');
 const NotFoundError = require('../errors/notFoundError');
 
@@ -39,7 +39,7 @@ module.exports.deleteCard = (req, res, next) => {
         throw new NotFoundError(`Карточка  с указанным id: ${cardId} не найдена`);
       }
       if (card.owner.toString() !== id) {
-        throw new AuthError('Недостаточно прав для удаления карточки');
+        throw new AccessError('Недостаточно прав для удаления карточки');
       } else {
         Card.findByIdAndRemove(cardId)
           .then((data) => {
