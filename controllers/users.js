@@ -4,6 +4,7 @@ const User = require('../models/user');
 const errorStatus = require('../utils/errorStatus');
 const BadRequest = require('../errors/badRequest');
 const NotFoundError = require('../errors/notFoundError');
+const DuplicateKeyError = require('../errors/duplicateKeyError');
 
 module.exports.createUser = (req, res, next) => {
   const {
@@ -14,11 +15,19 @@ module.exports.createUser = (req, res, next) => {
       name, about, avatar, email, password: hash,
     }))
     .then((data) => {
-      res.status(errorStatus.SUCCESSFUL_REQUEST).send(data);
+      res.status(errorStatus.SUCCESSFUL_REQUEST).send({
+        name: data.name,
+        about: data.about,
+        avatar: data.avatar,
+        _id: data._id,
+        email: data.email,
+      });
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
         throw new BadRequest('Не верные данные');
+      } else if (error.code === '11000') {
+        throw new DuplicateKeyError('Пользователь с указнным email существует');
       }
       next(error);
     })

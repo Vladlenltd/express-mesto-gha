@@ -12,20 +12,12 @@ const app = express();
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
-  // useCreateIndex: true,
-  // useFindAndModify: false,
 });
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`App works at port ${PORT}`);
 });
-// app.use((req, res, next) => {
-//   req.user = {
-//     _id: '62ea405344c8069c77d5e06e',
-//   };
-//   next();
-// });
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
