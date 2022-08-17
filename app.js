@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 const { celebrate, Joi } = require('celebrate');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
-const errorStatus = require('./utils/errorStatus');
+// const errorStatus = require('./utils/errorStatus');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
+const NotFoundError = require('./errors/notFoundError');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -19,6 +20,7 @@ app.listen(PORT, () => {
   console.log(`App works at port ${PORT}`);
 });
 
+app.use(express.json());
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -35,10 +37,9 @@ app.post('/signup', celebrate({
     avatar: Joi.string().regex(/^(https?:\/\/)?([\da-z.-]+).([a-z.]{2,6})([/\w.-]*)*\/?$/),
   }),
 }), createUser);
-app.use(express.json());
 app.use('/', auth, cardsRouter);
 app.use('/', auth, usersRouter);
 
-app.use((req, res) => {
-  res.status(errorStatus.NOT_FOUND).send({ message: 'Страницы не существует' });
+app.use((req, res, next) => {
+  next(new NotFoundError('Страницы не существует'));
 });

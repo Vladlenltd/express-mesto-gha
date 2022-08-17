@@ -8,7 +8,7 @@ const DuplicateKeyError = require('../errors/duplicateKeyError');
 
 module.exports.createUser = (req, res, next) => {
   const {
-    name, about, avatar, email, password,
+    email, name, about, avatar, password,
   } = req.body;
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
